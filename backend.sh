@@ -83,7 +83,7 @@ VALIDATE $? "Installing mysql client"
 mysql -h devopsaws78s.online -uroot -p${mysql_root_password}  < /app/schema/backend.sql &>> $LOGFILE
 VALIDATE $? "Loading scehma"
 
-systemctl restart backend &?? $LOGFILE
+systemctl restart backend &>> $LOGFILE
 VALIDATE $? "Restarting backend"
 
 
