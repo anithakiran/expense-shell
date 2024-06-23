@@ -79,7 +79,8 @@ VALIDATE $? "Enabling backend"
 dnf install mysql -y &>> $LOGFILE
 VALIDATE $? "Installing mysql client"
 
-mysql -h devopsaws78s.online -u root -p${mysql_root_password}  < /app/schema/backend.sql &>> $LOGFILE
+
+mysql -h devopsaws78s.online -uroot -p${mysql_root_password}  < /app/schema/backend.sql &>> $LOGFILE
 VALIDATE $? "Loading scehma"
 
 systemctl restart backend &?? $LOGFILE
