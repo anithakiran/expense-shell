@@ -1,49 +1,49 @@
 #!/bin/bash
 
 USERID=$(id -u)
+
 TIMESTAMP=$(date +%F-%H-%M-%S)
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-echo "Please enter DB password:"
+
+echo  "please enter DB password"
 read -s mysql_root_password
 
-VALIDATE(){
-   if [ $1 -ne 0 ]
-   then
-        echo -e "$2...$R FAILURE $N"
-        exit 1
-    else
-        echo -e "$2...$G SUCCESS $N"
-    fi
-}
-
 if [ $USERID -ne 0 ]
-then
-    echo "Please run this script with root access."
-    exit 1 # manually exit if error comes.
+then 
+    echo "please run this script with root access"
+    exit 1
 else
-    echo "You are super user."
+    echo "your are super user"
 fi
 
+echo "script started executing at : $TIMESTAMP"
 
-dnf install mysql-server -y &>>$LOGFILE
-VALIDATE $? "Installing MySQL Server"
+VALIDATE() {
+if [ $1 -ne 0 ]
+then    
+    echo -e "$2 is $R failure $N "
+else
+    echo -e "$2 is $G successfull $N"
+fi
+}
 
-systemctl enable mysqld &>>$LOGFILE
-VALIDATE $? "Enabling MySQL Server"
+dnf install mysql-server -y  &>> $LOGFILE
+VALIDATE $? "Installing Mysql-Server"
 
-systemctl start mysqld &>>$LOGFILE
-VALIDATE $? "Starting MySQL Server"
+systemctl enable mysqld  &>> $LOGFILE
+VALIDATE $? "Enabling mysql-server"
 
-# mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
-# VALIDATE $? "Setting up root password"
+systemctl start mysqld  &>> $LOGFILE
+VALIDATE $? "Starting mysql-server"
 
-#Below code will be useful for idempotent nature
-mysql -h devopsaws78s.online -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
+
+mysql -h devopsaws78s.online -uroot -p${mysql_root_password} -e 'show database;' &>> $LOGFILE
+
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
