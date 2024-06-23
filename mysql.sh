@@ -26,9 +26,9 @@ echo "script started executing at : $TIMESTAMP"
 VALIDATE() {
 if [ $1 -ne 0 ]
 then    
-    echo -e "installation is $R failure $N "
+    echo -e "$2 is $R failure $N "
 else
-    echo -e "installation is $G successfull $N"
+    echo -e "$2 is $G successfull $N"
 fi
 }
 
