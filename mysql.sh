@@ -41,7 +41,6 @@ VALIDATE $? "Enabling mysql-server"
 systemctl start mysqld  &>> $LOGFILE
 VALIDATE $? "Starting mysql-server"
 
-
 mysql -h devopsaws78s.online -uroot -p${mysql_root_password} -e 'show database;' &>> $LOGFILE
 
 if [ $? -ne 0 ]
