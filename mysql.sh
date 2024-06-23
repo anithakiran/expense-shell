@@ -10,6 +10,9 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+echo  "please enter DB password"
+read -s mysql_root_password
+
 if [ $USERID -ne 0 ]
 then 
     echo "please run this script with root access"
@@ -36,13 +39,8 @@ systemctl enable mysqld  &>> $LOGFILE
 VALIDATE $? "Enabling mysql-server"
 
 systemctl start mysqld  &>> $LOGFILE
-VALIDATE $? "starting mysql-server"
+VALIDATE $? "Starting mysql-server"
 
-echo  "please enter DB password"
-read -s mysql_root_password
-
-mysql_secure_installation --set-root-pass ExpenseApp@1 &>> $LOGFILE
-VALIDATE $? "setting up root password"
 
 mysql -h devopsaws78s.online -uroot -p${mysql_root_password} -e 'show database'; &>> $LOGFILE
 
